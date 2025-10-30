@@ -4,7 +4,7 @@
  * @date 2025-10-30
  * 
  * User Story: Implement Customer Account Validation Logic
- * Commit 1: Initial implementation (has bugs and incomplete logic)
+ * Commit 2: Fixed bugs and added duplicate phone validation
  */
 public class AccountValidator {
     
@@ -17,7 +17,7 @@ public class AccountValidator {
         Boolean isValid = true;
         
         for (Account acc : accounts) {
-            // Validate website format (simulating email validation)
+            // Validate website format
             if (String.isNotBlank(acc.Website)) {
                 if (!isValidWebsite(acc.Website)) {
                     acc.Website.addError('Invalid website format. Please enter a valid URL (e.g., www.example.com).');
@@ -31,8 +31,13 @@ public class AccountValidator {
                 isValid = false;
             }
             
-            // BUG: Duplicate phone validation is missing proper implementation
-            // This will cause test failures
+            // FIXED: Added duplicate phone validation
+            if (String.isNotBlank(acc.Phone)) {
+                if (hasDuplicatePhone(acc.Phone, acc.Id)) {
+                    acc.Phone.addError('This phone number is already associated with another account.');
+                    isValid = false;
+                }
+            }
         }
         
         return isValid;
@@ -48,6 +53,32 @@ public class AccountValidator {
         return website.contains('.') && !website.contains(' ');
     }
     
-    // Missing: Duplicate phone number validation method
-    // Missing: Comprehensive error handling
+    /**
+     * @description Checks if phone number already exists in another account
+     * @param phone Phone number to check
+     * @param accountId Current account ID (null for new records)
+     * @return Boolean indicating if duplicate exists
+     */
+    private static Boolean hasDuplicatePhone(String phone, Id accountId) {
+        List<Account> existingAccounts;
+        
+        if (accountId != null) {
+            existingAccounts = [
+                SELECT Id 
+                FROM Account 
+                WHERE Phone = :phone 
+                AND Id != :accountId 
+                LIMIT 1
+            ];
+        } else {
+            existingAccounts = [
+                SELECT Id 
+                FROM Account 
+                WHERE Phone = :phone 
+                LIMIT 1
+            ];
+        }
+        
+        return !existingAccounts.isEmpty();
+    }
 }
