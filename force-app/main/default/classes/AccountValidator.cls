@@ -34,7 +34,7 @@ public class AccountValidator {
             // Validate website format
             if (String.isNotBlank(acc.Website)) {
                 if (!isValidWebsite(acc.Website)) {
-                    acc.Website.addError('Invalid website format. Please enter a valid URL (e.g., www.example.com).');
+                    acc.Website.addError('Invalid website format. Please enter a valid URL (e.g., www.copado.com).');
                     isValid = false;
                 }
             }

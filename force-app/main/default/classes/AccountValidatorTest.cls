@@ -33,7 +33,7 @@ private class AccountValidatorTest {
     static void testValidWebsite() {
         Account acc = new Account(
             Name = 'Test Account',
-            Website = 'www.example.com',
+            Website = 'www.copado.com',
             Phone = '555-9999'
         );
         
