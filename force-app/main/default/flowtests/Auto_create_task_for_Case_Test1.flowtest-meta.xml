@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowTest xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>test description</description>
+    <flowApiName>Auto_create_task_for_Case</flowApiName>
+    <label>Test- Task if high priority</label>
+    <testPoints>
+        <elementApiName>Start</elementApiName>
+        <parameters>
+            <leftValueReference>$Record</leftValueReference>
+            <type>InputTriggeringRecordInitial</type>
+            <value>
+                <sobjectValue>{&quot;attributes&quot;:{&quot;type&quot;:&quot;Case&quot;},&quot;Origin&quot;:&quot;Web&quot;,&quot;Status&quot;:&quot;New&quot;,&quot;Priority&quot;:&quot;High&quot;,&quot;IsEscalated&quot;:false,&quot;OwnerId&quot;:&quot;005Qy00000nhQbVIAU&quot;}</sobjectValue>
+            </value>
+        </parameters>
+    </testPoints>
+    <testPoints>
+        <assertions>
+            <conditions>
+                <leftValueReference>Create_Task.Subject</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <errorMessage>unable to create task</errorMessage>
+        </assertions>
+        <assertions>
+            <conditions>
+                <leftValueReference>Create_Task.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Not Started</stringValue>
+                </rightValue>
+            </conditions>
+            <errorMessage>Value should be- not started</errorMessage>
+        </assertions>
+        <elementApiName>Finish</elementApiName>
+    </testPoints>
+</FlowTest>
