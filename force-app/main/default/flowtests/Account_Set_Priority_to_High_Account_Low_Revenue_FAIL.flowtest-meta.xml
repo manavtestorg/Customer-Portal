@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowTest xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Intentionally fails by asserting High priority for a $500,000 revenue account.</description>
+    <flowApiName>Account_Set_Priority_to_High</flowApiName>
+    <label>Account - Low Revenue FAIL</label>
+    <testPoints>
+        <elementApiName>Start</elementApiName>
+        <parameters>
+            <leftValueReference>$Record</leftValueReference>
+            <type>InputTriggeringRecordInitial</type>
+            <value>
+                <sobjectValue>{&quot;AnnualRevenue&quot;:&quot;500000&quot;,&quot;Name&quot;:&quot;Test Low Revenue Fail Case&quot;,&quot;OwnerId&quot;:&quot;005Qy00000nhQbVIAU&quot;}</sobjectValue>
+            </value>
+        </parameters>
+    </testPoints>
+    <testPoints>
+        <assertions>
+            <conditions>
+                <leftValueReference>$Record.CustomerPriority__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>High</stringValue>
+                </rightValue>
+            </conditions>
+            <errorMessage>FAILURE: System incorrectly allowed or failed to set Priority for a low-revenue account.</errorMessage>
+        </assertions>
+        <elementApiName>Finish</elementApiName>
+    </testPoints>
+</FlowTest>
